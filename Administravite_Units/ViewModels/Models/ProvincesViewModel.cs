@@ -11,4 +11,13 @@ namespace Administravite_Units.ViewModel
         public virtual ICollection<DistrictsViewModels> Districs { get; set; }
 
     }
+    public class Paging
+    {
+        public int page { get; set; }
+        public int pageSize { get; set; }
+        public int totalPages { get; set; }
+
+        public List<ProvincesViewModel> provincesList { get; set; } = new List<ProvincesViewModel>();
+
+    }
 }

@@ -19,5 +19,7 @@ namespace Data.Reponsitory
         void Delete(int id);
 
         List<Provinces> search(string name);
+
+        List<Provinces> searchByDistrict(string? name);
     }
 }

@@ -4,6 +4,8 @@ using Data.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Service;
+using System.Linq;
+using ViewModels.Models;
 using ViewModels.Models.Provinces;
 
 namespace Administravite_Units.Controllers
@@ -23,11 +25,24 @@ namespace Administravite_Units.Controllers
 
 
         [HttpGet]
-        public List<ProvincesViewModel> GetAll()
+        public ViewModel.Paging GetAll(int? pages = 1)
         {
             var provinces = _provincesService.GetAll();
             var mapper = _mapper.Map<List<ProvincesViewModel>>(provinces);
-            return mapper.ToList();
+            var pageSize = 5;
+            int totalPage = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(mapper.Count() / Convert.ToDouble(pageSize))));
+            mapper = mapper.Skip((int)((pages - 1) * pageSize)).Take(pageSize).ToList();
+
+            var pagings = new ViewModel.Paging
+            {
+                page = (int)pages,
+                pageSize = pageSize,
+                totalPages = totalPage,
+                provincesList = mapper
+            };
+            return pagings;
+
+
         }
         [HttpGet("{id}")]
         public ActionResult<ProvincesViewModel> GetById(int id)
@@ -78,6 +93,13 @@ namespace Administravite_Units.Controllers
             {
                 return NotFound();
             }
+        }
+        [HttpGet("Search-By-Districts")]
+        public IActionResult searchByDistrictName(string? name)
+        {
+            var search = _provincesService.searchByDistrict(name);
+            var provinces = _mapper.Map<List<ProvincesViewModel>>(search);
+            return Ok(provinces);
         }
     }
 }

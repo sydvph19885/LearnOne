@@ -51,6 +51,11 @@ namespace Data.Reponsitory.impl
             return ListProvinces.ToList();
         }
 
+        public List<Provinces> searchByDistrict(string name)
+        {
+            return _context.Provinces.Where(p=> p.Districs.Any(x => x.Districs_Name.Contains(name))).Include(x=>x.Districs).ToList();
+        }
+
         public void Update(Provinces provinces)
         {
             _context.Update(provinces);

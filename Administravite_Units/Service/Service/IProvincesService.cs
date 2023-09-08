@@ -23,6 +23,7 @@ namespace Service.Service
 
         void Delete(int id);
         List<Provinces> search(string? name);
+        List<Provinces> searchByDistrict(string? name);
 
     }
 }

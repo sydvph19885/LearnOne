@@ -52,6 +52,15 @@ namespace Service.Service.impl
             return GetAll();
         }
 
+        public List<Provinces> searchByDistrict(string? name)
+        {
+            if (!string.IsNullOrEmpty(name))
+            {
+                return _provincesReponsitory.searchByDistrict(name);
+            }
+            return GetAll().ToList();
+        }
+
         public void Update(int id, Provinces provinces)
         {
 
