@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Administravite_Units.Helper;
+using AutoMapper;
 using Data.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,20 +17,22 @@ namespace Administravite_Units.Controllers
         private readonly IWardsService _wardsService;
         private readonly IMapper _mapper;
 
-        public WardsController(IWardsService wardsService,IMapper mapper)
+        public WardsController(IWardsService wardsService, IMapper mapper)
         {
             _wardsService = wardsService;
             _mapper = mapper;
         }
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get(int? pages = 1, int? pageSize = 5)
         {
             var wards = _wardsService.GetAll();
             var wardsModel = _mapper.Map<List<WardsViewModel>>(wards);
-            return Ok(wardsModel);
+            var result = new Pagination<WardsViewModel>(wardsModel, (int)pages, (int)pageSize);
+            return Ok(result);
         }
         [HttpGet("{id}")]
-        public IActionResult GetById(int id) {
+        public IActionResult GetById(int id)
+        {
             var ward = _wardsService.GetById(id);
             var wardModel = _mapper.Map<WardsViewModel>(ward);
             return Ok(wardModel);
@@ -49,7 +52,8 @@ namespace Administravite_Units.Controllers
             return Ok("Update thành công");
         }
         [HttpGet("search")]
-        public IActionResult search(string? name) {
+        public IActionResult search(string? name)
+        {
             var wards = _wardsService.search(name);
             var wardsModels = _mapper.Map<List<WardsViewModel>>(wards);
             return Ok(wardsModels);

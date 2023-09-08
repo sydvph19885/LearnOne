@@ -1,4 +1,5 @@
-﻿using Administravite_Units.ViewModel;
+﻿using Administravite_Units.Helper;
+using Administravite_Units.ViewModel;
 using AutoMapper;
 using Data.Entity;
 using Microsoft.AspNetCore.Http;
@@ -25,23 +26,12 @@ namespace Administravite_Units.Controllers
 
 
         [HttpGet]
-        public ViewModel.Paging GetAll(int? pages = 1)
+        public Pagination<ProvincesViewModel> GetAll(int? pages = 1,int? pageSize=5)
         {
             var provinces = _provincesService.GetAll();
             var mapper = _mapper.Map<List<ProvincesViewModel>>(provinces);
-            var pageSize = 5;
-            int totalPage = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(mapper.Count() / Convert.ToDouble(pageSize))));
-            mapper = mapper.Skip((int)((pages - 1) * pageSize)).Take(pageSize).ToList();
-
-            var pagings = new ViewModel.Paging
-            {
-                page = (int)pages,
-                pageSize = pageSize,
-                totalPages = totalPage,
-                provincesList = mapper
-            };
-            return pagings;
-
+            var paging = new Pagination<ProvincesViewModel>(mapper, (int)pages,(int)pageSize);
+            return paging;
 
         }
         [HttpGet("{id}")]

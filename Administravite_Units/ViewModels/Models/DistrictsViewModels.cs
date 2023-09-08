@@ -16,4 +16,5 @@ namespace ViewModels.Models
 
         public virtual ICollection<WardsViewModel> Wards { get; set; }
     }
+
 }

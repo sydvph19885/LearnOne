@@ -14,13 +14,4 @@ namespace ViewModels.Models
         public string Wards_Name { get; set; }
         public int? Districs_ID { get; set; }
     }
-    public class Paging
-    {
-        public int page { get; set; }
-        public int pageSize { get; set; }
-        public int totalPages { get; set; }
-
-        public List<ProvincesViewModel> provincesList { get; set; } = new List<ProvincesViewModel>();
-
-    }
 }

@@ -41,7 +41,7 @@ namespace Data.Reponsitory.impl
 
         public Provinces GetById(int id)
         {
-            return _context.Provinces.Find(id);
+            return _context.Provinces.Where(x => x.ID == id).Include(x=>x.Districs).FirstOrDefault();
         }
 
         public List<Provinces> search(string name)
