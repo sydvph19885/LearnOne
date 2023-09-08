@@ -20,7 +20,7 @@ namespace ViewModels.Models
         public int pageSize { get; set; }
         public int totalPages { get; set; }
 
-        public List<ProvincesViewModel> provincesList { get; set; } = new List<ProvincesViewModel>();
+        public List<WardsViewModel> wardsPaging { get; set; } = new List<WardsViewModel>();
 
     }
 }

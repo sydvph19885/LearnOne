@@ -24,7 +24,7 @@ namespace Data.Reponsitory.impl
 
         public Districs GetById(int id)
         {
-            return _context.Districts.Find(id);
+            return _context.Districts.Where(x => x.ID == id).Include(d => d.Wards).FirstOrDefault();
         }
         public Districs Create(Districs district)
         {

@@ -16,4 +16,13 @@ namespace ViewModels.Models
 
         public virtual ICollection<WardsViewModel> Wards { get; set; }
     }
+    public class PagingDistricts
+    {
+        public int page { get; set; }
+        public int pageSize { get; set; }
+        public int totalPages { get; set; }
+
+        public List<DistrictsViewModels> districtsPage { get; set; } = new List<DistrictsViewModels>();
+
+    }
 }

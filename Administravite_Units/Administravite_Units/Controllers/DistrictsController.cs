@@ -3,6 +3,7 @@ using Data.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Service.Service;
+using System.Linq;
 using ViewModels.Models;
 using ViewModels.Models.Districs;
 
@@ -23,10 +24,20 @@ namespace Administravite_Units.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public List<DistrictsViewModels> GetAll()
+        public PagingDistricts GetAll(int? pages = 1)
         {
             var districsts = _districtsService.GetAll();
-            return _mapper.Map<List<DistrictsViewModels>>(districsts);
+            var pageSize = 5;
+            int totalPage = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(districsts.Count()) / pageSize));
+            var districstsList = _mapper.Map<List<DistrictsViewModels>>(districsts).Skip(((int)pages - 1) * pageSize).Take(pageSize);
+            var pagingDistricts = new PagingDistricts
+            {
+                page = (int)pages,
+                pageSize = pageSize,
+                totalPages = totalPage,
+                districtsPage = districstsList.ToList()
+            };
+            return pagingDistricts;
         }
         [HttpGet("{id}")]
         public DistrictsViewModels GetById(int id)
@@ -53,7 +64,7 @@ namespace Administravite_Units.Controllers
         public IActionResult Delete(int id)
         {
             var districs = _districtsService.GetById(id);
-            if(districs != null)
+            if (districs != null)
             {
                 _districtsService.Delete(id);
                 return Ok("Xoa thanh cong");

@@ -22,11 +22,20 @@ namespace Administravite_Units.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get(int? pages=1)
         {
             var wards = _wardsService.GetAll();
-            var wardsModel = _mapper.Map<List<WardsViewModel>>(wards);
-            return Ok(wardsModel);
+            int pageSize = 5;
+            int totalPage = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(wards.Count() / pageSize)));
+            var wardsModel = _mapper.Map<List<WardsViewModel>>(wards).Skip(((int)pages -1)*pageSize).Take(pageSize);
+            var pagingWards = new Paging
+            {
+                page = (int)pages,
+                pageSize = pageSize,
+                totalPages = totalPage,
+                wardsPaging = wardsModel.ToList()
+            };
+            return Ok(pagingWards);
         }
         [HttpGet("{id}")]
         public IActionResult GetById(int id) {
